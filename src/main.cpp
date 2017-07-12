@@ -11,13 +11,14 @@ void setup() {
 }
 
 void loop() {
-  Serial.println("Hello World!");
-
-  for(int dot = 0; dot < NUM_LEDS; dot++) {
-            leds[dot] = CRGB::Blue;
-            FastLED.show();
-            // clear this led for the next time around the loop
-            leds[dot] = CRGB::Black;
-            delay(30);
-        }
+  Serial.println("Rainbow start!");
+  for(int step = 0; step < 256; step++){
+    for(int dot = 0; dot < NUM_LEDS; dot++) {
+      leds[dot] = CHSV(step+(dot*NUM_LEDS % 256),255,63);
+      //FastLED.show();
+      //delay(30);
+    }
+    FastLED.show();
+    delay(12);
+  }
 }
