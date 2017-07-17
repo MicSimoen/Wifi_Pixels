@@ -19,16 +19,26 @@ void handleRoot() {
         server.send(200, "text/html", webPage);
 }
 
+void handleLedsOff() {
+        handleRoot();
+        Serial.println("OFF!");
+        effect = 0;
+}
+
 void handleRainbow() {
         handleRoot();
         Serial.println("Rainbow start!");
-        effect = 0;
+        effect = 1;
 }
 
 void handleComet() {
         handleRoot();
         Serial.println("Comet start!");
-        effect = 1;
+        effect = 2;
+}
+
+void ledsOff(){
+        FastLED.clear ();
 }
 
 void rainBow(){
@@ -46,7 +56,9 @@ void Comet(){
 }
 
 void setup() {
-        webPage += "<h1>ESP8266 Web Server</h1><p><a href=\"RainbowOn\"><button>Rainbow</button></a></p>";
+        webPage += "<h1>Wifi Pixels Control</h1>";
+        webPage += "<p><a href=\"LedsOff\"><button>OFF</button></a></p>";
+        webPage += "<p><a href=\"RainbowOn\"><button>Rainbow</button></a></p>";
         webPage += "<p><a href=\"CometOn\"><button>Comet</button></a></p>";
         Serial.begin(9600);
         FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
@@ -66,6 +78,7 @@ void setup() {
         Serial.println(WiFi.localIP());
 
         server.on("/", handleRoot);
+        server.on("/LedsOff", handleLedsOff);
         server.on("/RainbowOn", handleRainbow);
         server.on("/CometOn", handleComet);
 
@@ -78,9 +91,12 @@ void loop() {
 
         switch(effect) {
         case 0:
-                rainBow();
+                ledsOff();
                 break;
         case 1:
+                rainBow();
+                break;
+        case 2:
                 Comet();
                 break;
         }
