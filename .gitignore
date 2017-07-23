@@ -2,4 +2,4 @@
 .piolibdeps
 .clang_complete
 .gcc-flags.json
-/src/config_override.h
+/src/wifi_settings.h

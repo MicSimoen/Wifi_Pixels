@@ -1,19 +1,16 @@
 #include <Arduino.h>
 #include <ESP8266Wifi.h>
 #include <ESP8266WebServer.h>
-#include <FastLED.h>
 
 #include "config.h"
-#include "config_override.h" //Included after config.h to override some settings
+#include "wifi_settings.h"
 
-CRGB leds[NUM_LEDS];
-int effect = 0;
-uint8_t rainBowStep = 0; //used by rainbow
-uint8_t gHue = 0; // rotating "base color" used by comet
+#include "wifi_pixels_led.h"
 
 ESP8266WebServer server(80); //Server on port 80
 
 String webPage = "";
+wifi_pixels_led led_control;
 
 void handleRoot() {
         server.send(200, "text/html", webPage);
@@ -22,37 +19,19 @@ void handleRoot() {
 void handleLedsOff() {
         handleRoot();
         Serial.println("OFF!");
-        effect = 0;
+        led_control.set_current_effect(off);
 }
 
 void handleRainbow() {
         handleRoot();
         Serial.println("Rainbow start!");
-        effect = 1;
+        led_control.set_current_effect(rainbow);
 }
 
 void handleComet() {
         handleRoot();
         Serial.println("Comet start!");
-        effect = 2;
-}
-
-void ledsOff(){
-        FastLED.clear ();
-}
-
-void rainBow(){
-        for(int dot = 0; dot < NUM_LEDS; dot++) {
-                leds[dot] = CHSV(rainBowStep+(dot*NUM_LEDS % 256),255,BRIGHTNESS);
-        }
-        rainBowStep++;
-        rainBowStep = rainBowStep % 256;
-}
-
-void Comet(){
-        fadeToBlackBy( leds, NUM_LEDS, 20);
-        int pos = beatsin16( 13, 0, NUM_LEDS-1 );
-        leds[pos] += CHSV( gHue, 255, BRIGHTNESS);
+        led_control.set_current_effect(comet);
 }
 
 void setup() {
@@ -61,9 +40,6 @@ void setup() {
         webPage += "<p><a href=\"RainbowOn\"><button>Rainbow</button></a></p>";
         webPage += "<p><a href=\"CometOn\"><button>Comet</button></a></p>";
         Serial.begin(9600);
-        FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
-        // set master brightness control
-        FastLED.setBrightness(BRIGHTNESS);
 
         WiFi.begin(SSID, PSWD);
 
@@ -88,22 +64,9 @@ void setup() {
 
 void loop() {
         server.handleClient();          //Handle client requests
-
-        switch(effect) {
-        case 0:
-                ledsOff();
-                break;
-        case 1:
-                rainBow();
-                break;
-        case 2:
-                Comet();
-                break;
-        }
-        FastLED.show();
-        FastLED.delay(1000/FPS);
+        led_control.play_current_effect(1000/FPS);
 
         EVERY_N_MILLISECONDS( 100 ) {
-                gHue++;
+                led_control.increment_comet_hue();
         }
 }

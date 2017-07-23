@@ -1,9 +1,12 @@
-//WIFI SETTINGS
-#define SSID "Wireless_Network_SSID"
-#define PSWD "Password_123"
+#ifndef CONFIG_H
+#define CONFIG_H
+
+#include <Arduino.h>
 
 //FAST LED CONFIG
-#define NUM_LEDS 16
-#define DATA_PIN 4
-#define BRIGHTNESS 96
-#define FPS 120
+const int NUM_LEDS = 16;
+const int DATA_PIN = 4;
+const int BRIGHTNESS = 96;
+const int FPS = 120;
+
+#endif
