@@ -2,10 +2,11 @@
 #define PARAMETERS_H
 
 //Led effects available
-typedef enum led_effect{
-    off = 0,
-    rainbow = 1,
-    comet = 2
+typedef enum led_effect {
+        off = 0,
+        rainbow = 1,
+        comet = 2,
+        breathing = 3
 } led_effect;
 
 #endif

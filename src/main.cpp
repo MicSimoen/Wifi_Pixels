@@ -36,11 +36,18 @@ void handleComet() {
         led_control.set_current_effect(comet);
 }
 
+void handleBreathing() {
+        handleRoot();
+        Serial.println("Breathing start!");
+        led_control.set_current_effect(breathing);
+}
+
 void setup() {
         webPage += "<h1>Wifi Pixels Control</h1>";
         webPage += "<p><a href=\"LedsOff\"><button>OFF</button></a></p>";
         webPage += "<p><a href=\"RainbowOn\"><button>Rainbow</button></a></p>";
         webPage += "<p><a href=\"CometOn\"><button>Comet</button></a></p>";
+        webPage += "<p><a href=\"BreathingOn\"><button>Breathing</button></a></p>";
         Serial.begin(115200);
         Serial.println("");
 
@@ -99,6 +106,7 @@ void setup() {
         server.on("/LedsOff", handleLedsOff);
         server.on("/RainbowOn", handleRainbow);
         server.on("/CometOn", handleComet);
+        server.on("/BreathingOn", handleBreathing);
 
         server.begin();                  //Start server
         Serial.println("HTTP server started");
@@ -111,6 +119,6 @@ void loop() {
         led_control.play_current_effect(1000/STD_FPS);
 
         EVERY_N_MILLISECONDS( 100 ) {
-                led_control.increment_comet_hue();
+                led_control.increment_hue();
         }
 }
