@@ -26,9 +26,11 @@ led_effect wifi_pixels_led::get_current_effect(void){
 void wifi_pixels_led::set_comet_hue(uint8_t new_comet_hue){
     comet_hue = new_comet_hue;
 }
+
 uint8_t wifi_pixels_led::get_comet_hue(void){
     return comet_hue;
 }
+
 void wifi_pixels_led::increment_comet_hue(void){
     comet_hue++;
 }
