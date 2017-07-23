@@ -12,6 +12,7 @@ private:
     CRGB leds[NUM_LEDS];
     uint8_t rainbow_step;
     uint8_t comet_hue;
+    uint8_t brightness;
 public:
     wifi_pixels_led(void);
 
@@ -20,6 +21,9 @@ public:
     void set_comet_hue(uint8_t new_comet_hue);
     uint8_t get_comet_hue(void);
     void increment_comet_hue(void);
+
+    void set_brightness(uint8_t new_brightness);
+    uint8_t get_brightness(void);
 
     void play_current_effect(unsigned long 	frame_delay);
 

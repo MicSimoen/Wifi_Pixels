@@ -6,7 +6,8 @@
 //FAST LED CONFIG
 const int NUM_LEDS = 16;
 const int DATA_PIN = 4;
-const int BRIGHTNESS = 96;
-const int FPS = 120;
+
+const uint8_t STD_BRIGHTNESS = 96;
+const int STD_FPS = 120;
 
 #endif

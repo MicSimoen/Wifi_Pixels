@@ -4,7 +4,6 @@
 
 #include "config.h"
 #include "wifi_settings.h"
-
 #include "wifi_pixels_led.h"
 
 ESP8266WebServer server(80); //Server on port 80
@@ -64,7 +63,7 @@ void setup() {
 
 void loop() {
         server.handleClient();          //Handle client requests
-        led_control.play_current_effect(1000/FPS);
+        led_control.play_current_effect(1000/STD_FPS);
 
         EVERY_N_MILLISECONDS( 100 ) {
                 led_control.increment_comet_hue();
