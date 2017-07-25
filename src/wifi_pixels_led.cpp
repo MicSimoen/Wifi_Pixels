@@ -97,3 +97,12 @@ void wifi_pixels_led::breathing_effect(void){
         FastLED.setBrightness(breath);
         FastLED.show();
 }
+
+void wifi_pixels_led::set_color(int inR, int inG, int inB){
+        for(int i = 0; i < NUM_LEDS; i++) {
+                leds[i].red   = inR;
+                leds[i].green = inG;
+                leds[i].blue  = inB;
+        }
+        FastLED.show();
+}

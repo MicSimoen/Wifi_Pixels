@@ -30,6 +30,8 @@ void leds_off(void);
 void rainbow_effect(void);
 void comet_effect(void);
 void breathing_effect(void);
+
+void set_color(int inR, int inG, int inB);
 };
 
 #endif
