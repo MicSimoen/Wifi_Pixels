@@ -3,7 +3,7 @@
 
 #include "parameters.h"
 #include "config.h"
-
+#define FASTLED_ALLOW_INTERRUPTS 0 //To resolve the led flickering when driving with ESP8266
 #include <FastLED.h>
 
 class wifi_pixels_led {
@@ -13,6 +13,7 @@ CRGB leds[NUM_LEDS];
 uint8_t rainbow_step;
 uint8_t hue;
 uint8_t brightness;
+bool police_phase;
 public:
 wifi_pixels_led(void);
 
@@ -28,8 +29,10 @@ void play_current_effect(unsigned long frame_delay);
 
 void leds_off(void);
 void rainbow_effect(void);
+void solid_rgb_effect(void);
 void comet_effect(void);
 void breathing_effect(void);
+void police_effect(void);
 
 void set_color(int inR, int inG, int inB);
 };

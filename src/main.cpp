@@ -168,6 +168,18 @@ void handleBreathing() {
         led_control.set_current_effect(breathing);
 }
 
+void handlePolice() {
+        handleRoot();
+        Serial.println("Police start!");
+        led_control.set_current_effect(police);
+}
+
+void handleSolidRGB() {
+        handleRoot();
+        Serial.println("Solid RGB start!");
+        led_control.set_current_effect(solidRGB);
+}
+
 //------------------------------------------------
 
 bool processJson(char* message) {
@@ -380,6 +392,8 @@ void setup() {
         webPage += "<p><a href=\"RainbowOn\"><button>Rainbow</button></a></p>";
         webPage += "<p><a href=\"CometOn\"><button>Comet</button></a></p>";
         webPage += "<p><a href=\"BreathingOn\"><button>Breathing</button></a></p>";
+        webPage += "<p><a href=\"PoliceOn\"><button>Police</button></a></p>";
+        webPage += "<p><a href=\"SolidRGB\"><button>Solid RGB</button></a></p>";
 
         #if defined(DEBUG_SERIAL)
         Serial.begin(115200);
@@ -394,7 +408,7 @@ void setup() {
 
         setup_wifi();
 
-        setup_mqtt();
+        //setup_mqtt();
 
         setup_OTA();
 
@@ -403,6 +417,8 @@ void setup() {
         server.on("/RainbowOn", handleRainbow);
         server.on("/CometOn", handleComet);
         server.on("/BreathingOn", handleBreathing);
+        server.on("/PoliceOn", handlePolice);
+        server.on("/SolidRGB", handleSolidRGB);
 
         server.begin();                  //Start server
         Serial.println("HTTP server started");
@@ -411,15 +427,15 @@ void setup() {
 void loop() {
         ArduinoOTA.handle();
 
-        //server.handleClient();          //Handle client requests
-        //led_control.play_current_effect(1000/STD_FPS);
+        server.handleClient();          //Handle client requests
+        led_control.play_current_effect(1000/STD_FPS);
 
 //---------------------------------------------
 
-        if (!client.connected()) {
-                reconnect();
-        }
-        client.loop();
+        // if (!client.connected()) {
+        //         reconnect();
+        // }
+        // client.loop();
 
         if (flash) {
                 if (startFlash) {

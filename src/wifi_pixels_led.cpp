@@ -7,6 +7,7 @@
 wifi_pixels_led::wifi_pixels_led(void){
         current_effect = off;
         rainbow_step = 0;
+        police_phase = true;
         hue = 0;
         brightness = STD_BRIGHTNESS;
 
@@ -57,6 +58,13 @@ void wifi_pixels_led::play_current_effect(unsigned long frame_delay){
         case breathing:
                 breathing_effect();
                 break;
+        case police:
+                police_effect();
+                frame_delay = 10 * frame_delay;
+                break;
+        case solidRGB:
+                solid_rgb_effect();
+                break;
         }
 
         FastLED.delay(frame_delay);
@@ -75,6 +83,16 @@ void wifi_pixels_led::rainbow_effect(void){
         }
         rainbow_step++;
         rainbow_step = rainbow_step % 256;
+
+        FastLED.show();
+}
+
+void wifi_pixels_led::solid_rgb_effect(void){
+        FastLED.setBrightness(brightness);
+
+        for(int dot = 0; dot < NUM_LEDS; dot++) {
+                leds[dot] = CHSV((dot*NUM_LEDS % 256),255,brightness);
+        }
 
         FastLED.show();
 }
@@ -103,6 +121,31 @@ void wifi_pixels_led::set_color(int inR, int inG, int inB){
                 leds[i].red   = inR;
                 leds[i].green = inG;
                 leds[i].blue  = inB;
+        }
+        FastLED.show();
+}
+
+void wifi_pixels_led::police_effect(void){
+        FastLED.clear();
+        for(int i = 0; i < NUM_LEDS; i++) {
+                if(i % 2) {
+                        if(police_phase) {
+                                leds[i].red   = 255;
+                                leds[i].green = 0;
+                                leds[i].blue  = 0;
+                        }
+                } else {
+                        if(!police_phase) {
+                                leds[i].red   = 0;
+                                leds[i].green = 0;
+                                leds[i].blue  = 255;
+                        }
+                }
+        }
+        if(police_phase) {
+                police_phase=false;
+        } else {
+                police_phase = true;
         }
         FastLED.show();
 }
